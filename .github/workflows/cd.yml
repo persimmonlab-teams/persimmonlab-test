@@ -1,0 +1,23 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [ main ] 
+
+# workflow가 run할때 실행하는 내용 정의
+jobs:
+  SSH:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: ssh to ec2
+        uses: appleboy/ssh-action@master 
+        with:
+          key: ${{ secrets.EC2_KEY }}    
+          host: ${{ secrets.HOST }}    
+          username: ${{ secrets.USER }}   
+          script: | #실행할 코드
+            cd ~/myapp
+            python3 app.py
+           
